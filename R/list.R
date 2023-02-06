@@ -64,7 +64,7 @@ expand_parents <- function(pangoro, input){
 #' list_children(my_pangoro, 'BL.1')
 #' lapply(c('BL.1', 'BA.1', 'BE.9.1', 'BQ.4'), list_children, pangoro = my_pangoro)
 #' }
-#' @export
+#' @noRd
 list_children <- function(pangoro, input) {
 
   # Grab alias for each compression to maximum possible
