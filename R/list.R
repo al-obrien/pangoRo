@@ -57,6 +57,7 @@ expand_parents <- function(pangoro, input){
 #'
 #' @param pangoro Pangoro S3 class object.
 #' @param input Lineage name (scalar).
+#' @param full_names Boolean, to return expanded or alias name of children (default: \code{FALSE}).
 #'
 #' @examples
 #' \dontrun{
@@ -65,22 +66,17 @@ expand_parents <- function(pangoro, input){
 #' lapply(c('BL.1', 'BA.1', 'BE.9.1', 'BQ.4'), list_children, pangoro = my_pangoro)
 #' }
 #' @noRd
-list_children <- function(pangoro, input) {
+list_children <- function(pangoro, input, full_names = FALSE) {
 
-  # Grab alias for each compression to maximum possible
+  alias <- gsub(input, pattern = '^([A-Za-z]*)(\\..*)$',replacement = '\\1', perl = TRUE)
+  tail <- gsub(input, pattern = '^([A-Za-z]*)\\.?(.*)?$',replacement = '\\2', perl = TRUE)
+  full_exp <- expand_pangoro(pangoro, pangoro$alias)
+  alis_exp <- full_exp[names(full_exp) == alias]
+  full_exp <- full_exp[!names(full_exp) == alias] # Drop on searched
 
-  # Until
+  output <- full_exp[grep(x = full_exp, pattern = paste0('^', paste(alis_exp, tail, sep = '.')))]
 
-  # if(length(input) > 1) stop('Input can only be 1 element long.')
-  #
-  # # Expand fully to see number of steps
-  # full_name <- expand_pangoro(pangoro, input, max_level = NULL)
-  # split_exp <-  strsplit(full_name, '.', fixed = TRUE)
-  # max_steps <- sapply(split_exp, function(x) length(x))
-  # num_steps <- floor( (max_steps - 1) / 3)
-  #
-  # out <- sapply(1:num_steps, FUN =  expand_pangoro, pangoro = pangoro, input = input)
-  # gsub(out, pattern = '^([A-Za-z]*)(\\..*)$',replacement = '\\1', perl = TRUE)
+  if(full_names) return(output) else names(output)
 }
 
 
