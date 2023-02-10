@@ -69,7 +69,7 @@ crt_expand_nm <- function(input, exp_nm, prov_nm) {
   # Check if any match found or if a match is blank
   if(is.na(exp_nm) || length(exp_nm) == 0 || nchar(exp_nm) == 0) return(input)
 
-  if(length(prov_nm) == 1) return(input)
+  if(length(prov_nm) == 1 & nchar(exp_nm) > 0) return(exp_nm) # For when only alias given
   if(length(prov_nm) == 2) {
     return(paste(exp_nm, prov_nm[2], sep = '.'))
   } else {
