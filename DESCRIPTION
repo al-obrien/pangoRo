@@ -1,7 +1,7 @@
 Package: pangoRo
 Type: Package
 Title: R toolset to work with PANGO lineages
-Version: 0.1.0
+Version: 0.2.0
 Author: Allen OBrien
 Maintainer: Allen OBrien <allen.g.obrien@gmail.com>
 Description: A set of R utilities for loading and operating with PANGO lineage data.
