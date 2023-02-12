@@ -15,6 +15,9 @@
 #' @export
 search_pangoro <- function(pangoro, input, search, direction = 'both') {
 
+  # Enforce case
+  direction <- tolower(direction)
+
   # Expand search
   exp_search <- strsplit(expand_pangoro(pangoro, search), '.', fixed = TRUE)
   exp_search_len <- sapply(exp_search, length)
@@ -29,7 +32,7 @@ search_pangoro <- function(pangoro, input, search, direction = 'both') {
       exp_input_trunc <- lapply(exp_input, `[`, 1:exp_search_len)
       parent_search <- purrr::map2_lgl(exp_search, exp_input_trunc, ~all(Reduce(`==`, list(.x,.y))))
     } else {parent_search <- NULL}
-  }
+  } else {parent_search <- NULL}
 
   # Search children
   if(direction == 'both' || direction == 'down'){
@@ -37,7 +40,7 @@ search_pangoro <- function(pangoro, input, search, direction = 'both') {
       exp_search_trunc <- lapply(exp_search, `[`, 1:exp_input_len)
       child_search <- purrr::map2_lgl(exp_input, exp_search_trunc, ~all(Reduce(`==`, list(.x,.y))))
     } else {child_search <- NULL}
-  }
+  } else {child_search <- NULL}
 
   # Combine/return
   output <- unique(c(child_search, parent_search))

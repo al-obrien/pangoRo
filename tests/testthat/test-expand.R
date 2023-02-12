@@ -1,4 +1,4 @@
-my_pangoro <- pangoro(offline = TRUE)
+suppressMessages(my_pangoro <- pangoro(offline = TRUE))
 
 test_that("Alias scalar expansions...", {
   expect_equal(expand_pangoro(my_pangoro, 'BA.1'), 'B.1.1.529.1', ignore_attr = TRUE)

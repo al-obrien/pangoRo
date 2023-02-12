@@ -20,7 +20,7 @@
 collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) {
 
   # Split
-  lineage_list <- strsplit(input, '.', fixed = TRUE)
+  lineage_list <- strsplit(x = input, '.', fixed = TRUE)
   max_steps <- sapply(lineage_list, function(x) length(x)) - 1
   num_steps <- floor( (max_steps - 1) / 3)
 

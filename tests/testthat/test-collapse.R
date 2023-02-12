@@ -1,4 +1,4 @@
-my_pangoro <- pangoro(offline = TRUE)
+suppressMessages(my_pangoro <- pangoro(offline = TRUE))
 
 test_that("Alias scalar compressions...", {
   expect_equal(collapse_pangoro(my_pangoro, 'B.1.1.529.1'), 'BA.1', ignore_attr = TRUE)
