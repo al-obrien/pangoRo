@@ -26,7 +26,7 @@ sort_pangoro <- function(pangoro, x, index_only = FALSE, na.last = FALSE, ...){
   uniq_lin_full <- expand_pangoro(pangoro, uniq_lin)
 
   # Convert numbers to actual number for sorting
-  uniq_lin_full <- setNames(strsplit(uniq_lin_full, '.', fixed = TRUE), uniq_lin)
+  uniq_lin_full <- stats::setNames(strsplit(uniq_lin_full, '.', fixed = TRUE), uniq_lin)
 
   # Slice out character, integers, and recombined for sort
   max_vec <- max(sapply(uniq_lin_full, length))

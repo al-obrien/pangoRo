@@ -98,7 +98,7 @@ fetch_pango_notes <- function(url = 'https://raw.githubusercontent.com/cov-linea
                               description_col = 'Description') {
 
   # Load tables
-  cov_desc <- read.delim(url, sep = '\t')
+  cov_desc <- utils::read.delim(url, sep = '\t')
 
   if(!is.null(pattern)) {
     # Index those matching the alias pattern

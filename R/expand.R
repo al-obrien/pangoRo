@@ -21,10 +21,10 @@
 expand_pangoro <- function(pangoro, input = character(), max_level = NULL, simplify = TRUE) {
 
   if(!is.null(max_level) && max_level < 0) stop('Invalid `max_level` parameter.')
-  if(any(na.omit(input) == '')) stop('Convert any blanks to NA_character_')
+  if(any(stats::na.omit(input) == '')) stop('Convert any blanks to NA_character_')
 
   # Split and get name
-  provided_name <- setNames(strsplit(input, '.', fixed = TRUE), input)
+  provided_name <- stats::setNames(strsplit(input, '.', fixed = TRUE), input)
   alias_name <- sapply(provided_name, `[[`, 1)
 
   # Select highest level and return (unique helps handle NA matches, %in% instead of == helps handle NA carry over)

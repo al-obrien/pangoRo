@@ -1,8 +1,10 @@
 #' Constructor for pangoRo object
 #'
 #' To minimize the number of times PANGO links are called, the first time the
-#' table will be cached which can be recycled for the current session for that day
-#' .
+#' table will be cached which can be recycled for the current session for that day..
+#'
+#' @inheritParams pangoro
+#'
 #' @noRd
 new_pangoro <- function(path = character(),
                         refresh = FALSE,
@@ -52,6 +54,7 @@ new_pangoro <- function(path = character(),
 #'
 #' @param path Path to PANGO lineage JSON file.
 #' @param refresh Boolean value to force cache to refresh (default: \code{FALSE})
+#' @param offline Boolean value, if \code{TRUE} use a saved version of alias table within package.
 #' @param rm_spec_char Boolean (default: \code{TRUE})
 #' @examples
 #' \dontrun{

@@ -17,6 +17,8 @@ pangoro(
 
 \item{refresh}{Boolean value to force cache to refresh (default: \code{FALSE})}
 
+\item{offline}{Boolean value, if \code{TRUE} use a saved version of alias table within package.}
+
 \item{rm_spec_char}{Boolean (default: \code{TRUE})}
 }
 \description{
