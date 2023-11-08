@@ -33,3 +33,16 @@ test_that("Collapsing on already partially collapsed input", {
   expect_equal(collapse_pangoro(my_pangoro, 'BQ.1.10.1.1'), 'EC.1', ignore_attr = TRUE)
   expect_equal(pangoRo::collapse_pangoro(my_pangoro, 'BA.3.1.1.999.999.999'), 'BA.3.1.1.999.999.999') # For when no alias is found
 })
+
+test_that("Parent of new alias can be collapsed if so desired for grouping work", {
+  expect_equal(collapse_pangoro(my_pangoro, 'B.1.1.529.5.3.1.1.1.1', aliase_parent = TRUE), 'BQ', ignore_attr = TRUE)
+  expect_equal(collapse_pangoro(my_pangoro, c('B.1.1.529.5.3.1.1.1.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1.1'), aliase_parent = TRUE),
+               c('BQ', 'EC', 'EC.1'), ignore_attr = TRUE)
+  expect_equal(collapse_pangoro(my_pangoro, c('B.1.1.529.5.3.1.1.1.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1.1'), aliase_parent = TRUE, max_level = 2),
+               c('BQ', 'BE.1.1.1.1.10.1', 'BE.1.1.1.1.10.1.1'), ignore_attr = TRUE)
+
+})

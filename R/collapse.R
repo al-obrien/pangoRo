@@ -7,6 +7,7 @@
 #' @param input Vector of lineage names to collapse (character vector).
 #' @param max_level How far to expand the lineage name (default: maximum).
 #' @param simplify Boolean, pass to \code{\link{mapply}}.
+#' @param aliase_parent Boolean, to use alias code for originating parent (e.g. BQ.1.10.1 -> EC)
 #'
 #' @examples
 #' \dontrun{
@@ -17,7 +18,7 @@
 #' collapse_pangoro(my_pangoro, x, 2)
 #' }
 #' @export
-collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) {
+collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE, aliase_parent = FALSE) {
 
   # Split
   lineage_list <- strsplit(x = input, '.', fixed = TRUE)
@@ -34,7 +35,7 @@ collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) 
                               ~paste0(`[`(.x, 1:.y), collapse = '.'))
 
     # Expand alias after slice to ensure search can occur on partially collapsed input
-    alias_name_exp <- purrr::map(alias_name, ~expand_pangoro(pangoro, .x))
+    alias_name_exp <- if(length(alias_name) > 0) expand_pangoro(pangoro, unlist(alias_name, use.names = FALSE), simplify = FALSE) else alias_name
 
     tail_end <- purrr::map2(lineage_list[indx], end_max + 1,
                             ~paste0(`[`(.x, .y:length(.x)), collapse = '.'))
@@ -57,7 +58,7 @@ collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) 
                               ~paste0(`[`(.x, 1:.y), collapse = '.'))
 
     # Expand alias after slice to ensure search can occur on partially collapsed input
-    alias_name_exp <- purrr::map(alias_name, ~expand_pangoro(pangoro, .x))
+    alias_name_exp <- if(length(alias_name) > 0) expand_pangoro(pangoro, unlist(alias_name, use.names = FALSE), simplify = FALSE) else alias_name
 
     tail_end <- purrr::map2(lineage_list[indx], end_max + 1,
                             ~paste0(`[`(.x, .y:length(.x)), collapse = '.'))
@@ -73,6 +74,25 @@ collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) 
 
   }
 
+  # Further collapse if parents are required to have shorter alias names too
+  if(aliase_parent) {
+
+    # Determine once again which are now in alias form X.#.#.# which could be dropped into a parent name like X
+    lineage_list_c <- strsplit(x = input, '.', fixed = TRUE)
+    max_steps_c <- sapply(lineage_list_c, function(x) length(x)) - 1
+    indx_c <- max_steps_c == 3
+
+    if(any(indx_c)){
+      tmp_exp <- expand_pangoro(pangoro, input[indx_c], simplify = FALSE)
+      input[indx_c] <- as.character(mapply(tmp_exp,
+                                           FUN = function(x) {
+                                             tmp <- pangoro$alias[pangoro$lineage == x & pangoro$recomb == FALSE]
+                                             if(length(tmp) == 0) tmp <- x
+                                             tmp
+                                           })
+      )
+      }
+  }
   return(input)
 }
 
