@@ -26,7 +26,7 @@ You can install {pangoRo} from GitHub:
 remotes::install_github('al-obrien/pangoRo')
 ```
 
-## Example
+## Examples
 
 The basic usage of {pangoRo} is to expand, collapse, and sort COVID-19
 lineages. Start by creating the *pangoro* object that links to the
@@ -41,14 +41,27 @@ my_pangoro <- pangoro()
 #> Loading alias table from PANGO webiste...
 ```
 
+### Collapse
+
+With a vector of PANGO lineages, provide fully collapsed output.
+
 ``` r
 # Vector of COVID-19 lineages to collapse
-cov_lin <- c('B.1.617.2', 'BL.2', 'B.1.1.529.2.75.1.2', 'XD.1')
+cov_lin <- c('B.1.617.2', 'BL.2', 'B.1.1.529.2.75.1.2', 'BA.2.75.1.2', 'XD.1')
 
 # Collapse lineage names as far as possible
 collapse_pangoro(my_pangoro, cov_lin)
-#> [1] "B.1.617.2" "BL.2"      "BL.2"      "XD.1"
+#> [1] "B.1.617.2"   "BL.2"        "BL.2"        "BA.2.75.1.2" "XD.1"
 ```
+
+Can also define how far to collapse each input.
+
+``` r
+collapse_pangoro(my_pangoro, cov_lin, max_level = 1)
+#> [1] "B.1.617.2"   "BL.2"        "BA.2.75.1.2" "BA.2.75.1.2" "XD.1"
+```
+
+### Expand
 
 ``` r
 # Vector of COVID-19 lineages to expand
@@ -62,6 +75,8 @@ exp_lin
 #>                 BL.2                 XD.1 
 #> "B.1.1.529.2.75.1.2"               "XD.1"
 ```
+
+### Sort
 
 ``` r
 # Sort lineages
