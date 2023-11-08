@@ -4,6 +4,8 @@
 # pangoRo
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/al-obrien/pangoRo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/al-obrien/pangoRo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 COVID-19 lineage names can be confusing to navigate; there are many
