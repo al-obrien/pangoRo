@@ -51,38 +51,64 @@ cov_lin <- c('B.1.617.2', 'BL.2', 'B.1.1.529.2.75.1.2', 'BA.2.75.1.2', 'XD.1')
 
 # Collapse lineage names as far as possible
 collapse_pangoro(my_pangoro, cov_lin)
-#> [1] "B.1.617.2"   "BL.2"        "BL.2"        "BA.2.75.1.2" "XD.1"
+#> [1] "B.1.617.2" "BL.2"      "BL.2"      "BL.2"      "XD.1"
 ```
 
 Can also define how far to collapse each input.
 
 ``` r
 collapse_pangoro(my_pangoro, cov_lin, max_level = 1)
-#> [1] "B.1.617.2"   "BL.2"        "BA.2.75.1.2" "BA.2.75.1.2" "XD.1"
+#> [1] "B.1.617.2"   "BL.2"        "BA.2.75.1.2" "BL.2"        "XD.1"
 ```
 
 ### Expand
 
 ``` r
 # Vector of COVID-19 lineages to expand
-cov_lin <- c('B.1.617.2', 'AY.4', 'AY.39', 'BL.2', 'XD.1')
+cov_lin <- c('B.1.617.2', 'B.1.617.2.6', 'AY.4', 'AY.39', 'BL.2', 'BA.1', 'AY.2', 'XD.1')
 
 # Expand lineage names as far as possible
 exp_lin <- expand_pangoro(my_pangoro, cov_lin)
 exp_lin
-#>            B.1.617.2                 AY.4                AY.39 
-#>          "B.1.617.2"        "B.1.617.2.4"       "B.1.617.2.39" 
-#>                 BL.2                 XD.1 
-#> "B.1.1.529.2.75.1.2"               "XD.1"
+#>            B.1.617.2          B.1.617.2.6                 AY.4 
+#>          "B.1.617.2"        "B.1.617.2.6"        "B.1.617.2.4" 
+#>                AY.39                 BL.2                 BA.1 
+#>       "B.1.617.2.39" "B.1.1.529.2.75.1.2"        "B.1.1.529.1" 
+#>                 AY.2                 XD.1 
+#>        "B.1.617.2.2"               "XD.1"
 ```
 
 ### Sort
 
+Perform a pseudo-sort on the lineage names.
+
 ``` r
 # Sort lineages
 sort_pangoro(my_pangoro, exp_lin)
-#>                 BL.2            B.1.617.2                 AY.4 
-#> "B.1.1.529.2.75.1.2"          "B.1.617.2"        "B.1.617.2.4" 
+#>                 BA.1                 BL.2            B.1.617.2 
+#>        "B.1.1.529.1" "B.1.1.529.2.75.1.2"          "B.1.617.2" 
+#>                 AY.2                 AY.4          B.1.617.2.6 
+#>        "B.1.617.2.2"        "B.1.617.2.4"        "B.1.617.2.6" 
 #>                AY.39                 XD.1 
 #>       "B.1.617.2.39"               "XD.1"
+```
+
+Split the lineages by their lowest alias codes and sort within each
+grouping
+
+``` r
+collapsed_full <- collapse_pangoro(my_pangoro, cov_lin, aliase_parent = TRUE) 
+grps <-  split(collapsed_full, sapply(strsplit(collapsed_full, split = '\\.'), `[[`, 1))
+lapply(grps, function(x) sort_pangoro(my_pangoro, x))
+#> $AY
+#> [1] "AY"    "AY.2"  "AY.4"  "AY.6"  "AY.39"
+#> 
+#> $BA
+#> [1] "BA.1"
+#> 
+#> $BL
+#> [1] "BL.2"
+#> 
+#> $XD
+#> [1] "XD.1"
 ```

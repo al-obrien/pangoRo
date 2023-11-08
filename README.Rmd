@@ -66,7 +66,7 @@ collapse_pangoro(my_pangoro, cov_lin, max_level = 1)
 
 ```{r}
 # Vector of COVID-19 lineages to expand
-cov_lin <- c('B.1.617.2', 'AY.4', 'AY.39', 'BL.2', 'XD.1')
+cov_lin <- c('B.1.617.2', 'B.1.617.2.6', 'AY.4', 'AY.39', 'BL.2', 'BA.1', 'AY.2', 'XD.1')
 
 # Expand lineage names as far as possible
 exp_lin <- expand_pangoro(my_pangoro, cov_lin)
@@ -75,8 +75,18 @@ exp_lin
 
 ### Sort
 
+Perform a pseudo-sort on the lineage names.
+
 ```{r}
 # Sort lineages
 sort_pangoro(my_pangoro, exp_lin)
+```
+
+Split the lineages by their lowest alias codes and sort within each grouping
+
+```{r}
+collapsed_full <- collapse_pangoro(my_pangoro, cov_lin, aliase_parent = TRUE) 
+grps <-  split(collapsed_full, sapply(strsplit(collapsed_full, split = '\\.'), `[[`, 1))
+lapply(grps, function(x) sort_pangoro(my_pangoro, x))
 ```
 
