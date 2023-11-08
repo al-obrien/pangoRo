@@ -19,3 +19,5 @@ Imports:
     digest,
     jsonlite,
     purrr
+URL: https://al-obrien.github.io/pangoRo/, https://github.com/al-obrien/pangoRo
+BugReports: https://github.com/al-obrien/pangoRo/issues
