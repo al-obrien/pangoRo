@@ -32,13 +32,17 @@ collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) 
 
     alias_name <- purrr::map2(lineage_list[indx], end_max,
                               ~paste0(`[`(.x, 1:.y), collapse = '.'))
+
+    # Expand alias after slice to ensure search can occur on partially collapsed input
+    alias_name_exp <- purrr::map(alias_name, ~expand_pangoro(pangoro, .x))
+
     tail_end <- purrr::map2(lineage_list[indx], end_max + 1,
                             ~paste0(`[`(.x, .y:length(.x)), collapse = '.'))
 
     # as.character as mapply returned list if empty (purrr?)
-    input[indx] <- as.character(mapply(alias_name, tail_end,
-                                       FUN = function(x, y) {
-                                         tmp <- pangoro$alias[pangoro$lineage == x & pangoro$recomb == FALSE]
+    input[indx] <- as.character(mapply(alias_name, tail_end, alias_name_exp,
+                                       FUN = function(x, y, z) {
+                                         tmp <- pangoro$alias[pangoro$lineage == z & pangoro$recomb == FALSE] # Use full exp to search
                                          if(length(tmp) == 0) tmp <- x # If not found in lookup (length 0) return input (i.e. top of PANGO list)
                                          paste(tmp, y, sep = '.')
                                        }, SIMPLIFY = simplify))
@@ -51,12 +55,16 @@ collapse_pangoro <- function(pangoro, input, max_level = NULL, simplify = TRUE) 
 
     alias_name <- purrr::map2(lineage_list[indx], end_max,
                               ~paste0(`[`(.x, 1:.y), collapse = '.'))
+
+    # Expand alias after slice to ensure search can occur on partially collapsed input
+    alias_name_exp <- purrr::map(alias_name, ~expand_pangoro(pangoro, .x))
+
     tail_end <- purrr::map2(lineage_list[indx], end_max + 1,
                             ~paste0(`[`(.x, .y:length(.x)), collapse = '.'))
 
-    input[indx] <- as.character(mapply(alias_name, tail_end,
-                                       FUN = function(x, y) {
-                                         tmp <- pangoro$alias[pangoro$lineage == x & pangoro$recomb == FALSE]
+    input[indx] <- as.character(mapply(alias_name, tail_end, alias_name_exp,
+                                       FUN = function(x, y, z) {
+                                         tmp <- pangoro$alias[pangoro$lineage == z & pangoro$recomb == FALSE] # Use full exp to search
                                          if(length(tmp) == 0) tmp <- x # If not found in lookup (length 0) return input (i.e. top of PANGO list)
                                          paste(tmp, y, sep = '.')
                                        }, SIMPLIFY = simplify))

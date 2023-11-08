@@ -27,3 +27,9 @@ test_that("Alias expanding by max_levels", {
   expect_equal(collapse_pangoro(my_pangoro, 'B.1.1.529.2.75.1.2', 2), 'BL.2', ignore_attr = TRUE)
   expect_equal(collapse_pangoro(my_pangoro, 'B.1.1.529.2.75.1.2', 3), 'BL.2', ignore_attr = TRUE)
 })
+
+test_that("Collapsing on already partially collapsed input", {
+  expect_equal(collapse_pangoro(my_pangoro, 'BA.2.75.1.2', 1), 'BL.2', ignore_attr = TRUE)
+  expect_equal(collapse_pangoro(my_pangoro, 'BQ.1.10.1.1'), 'EC.1', ignore_attr = TRUE)
+  expect_equal(pangoRo::collapse_pangoro(my_pangoro, 'BA.3.1.1.999.999.999'), 'BA.3.1.1.999.999.999') # For when no alias is found
+})
