@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/al-obrien/pangoRo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/al-obrien/pangoRo/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/al-obrien/pangoRo/branch/master/graph/badge.svg)](https://app.codecov.io/gh/al-obrien/pangoRo?branch=master)
 <!-- badges: end -->
 
 COVID-19 lineage names can be confusing to navigate; there are many
