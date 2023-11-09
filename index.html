@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">pangoRo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,9 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -72,7 +75,7 @@
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'al-obrien/pangoRo'</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
 <p>The basic usage of {pangoRo} is to expand, collapse, and sort COVID-19 lineages. Start by creating the <em>pangoro</em> object that links to the latest (or cached) PANGO reference. This is then passed to subsequent operations as reference.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -81,31 +84,78 @@
 <span><span class="co"># Create pangoro object</span></span>
 <span><span class="va">my_pangoro</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pangoro.html">pangoro</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading alias table from PANGO webiste...</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="collapse">Collapse<a class="anchor" aria-label="anchor" href="#collapse"></a>
+</h3>
+<p>With a vector of PANGO lineages, provide fully collapsed output.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Vector of COVID-19 lineages to collapse</span></span>
-<span><span class="va">cov_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B.1.617.2'</span>, <span class="st">'BL.2'</span>, <span class="st">'B.1.1.529.2.75.1.2'</span>, <span class="st">'XD.1'</span><span class="op">)</span></span>
+<span><span class="va">cov_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B.1.617.2'</span>, <span class="st">'BL.2'</span>, <span class="st">'B.1.1.529.2.75.1.2'</span>, <span class="st">'BA.2.75.1.2'</span>, <span class="st">'XD.1'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Collapse lineage names as far as possible</span></span>
 <span><span class="fu"><a href="reference/collapse_pangoro.html">collapse_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">cov_lin</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "B.1.617.2" "BL.2"      "BL.2"      "XD.1"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "B.1.617.2" "BL.2"      "BL.2"      "BL.2"      "XD.1"</span></span></code></pre></div>
+<p>Can also define how far to collapse each input.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/collapse_pangoro.html">collapse_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">cov_lin</span>, max_level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "B.1.617.2"   "BL.2"        "BA.2.75.1.2" "BL.2"        "XD.1"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="expand">Expand<a class="anchor" aria-label="anchor" href="#expand"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Vector of COVID-19 lineages to expand</span></span>
-<span><span class="va">cov_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B.1.617.2'</span>, <span class="st">'AY.4'</span>, <span class="st">'AY.39'</span>, <span class="st">'BL.2'</span>, <span class="st">'XD.1'</span><span class="op">)</span></span>
+<span><span class="va">cov_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B.1.617.2'</span>, <span class="st">'B.1.617.2.6'</span>, <span class="st">'AY.4'</span>, <span class="st">'AY.39'</span>, <span class="st">'BL.2'</span>, <span class="st">'BA.1'</span>, <span class="st">'AY.2'</span>, <span class="st">'XD.1'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Expand lineage names as far as possible</span></span>
 <span><span class="va">exp_lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/expand_pangoro.html">expand_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">cov_lin</span><span class="op">)</span></span>
 <span><span class="va">exp_lin</span></span>
-<span><span class="co">#&gt;            B.1.617.2                 AY.4                AY.39 </span></span>
-<span><span class="co">#&gt;          "B.1.617.2"        "B.1.617.2.4"       "B.1.617.2.39" </span></span>
-<span><span class="co">#&gt;                 BL.2                 XD.1 </span></span>
-<span><span class="co">#&gt; "B.1.1.529.2.75.1.2"               "XD.1"</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;            B.1.617.2          B.1.617.2.6                 AY.4 </span></span>
+<span><span class="co">#&gt;          "B.1.617.2"        "B.1.617.2.6"        "B.1.617.2.4" </span></span>
+<span><span class="co">#&gt;                AY.39                 BL.2                 BA.1 </span></span>
+<span><span class="co">#&gt;       "B.1.617.2.39" "B.1.1.529.2.75.1.2"        "B.1.1.529.1" </span></span>
+<span><span class="co">#&gt;                 AY.2                 XD.1 </span></span>
+<span><span class="co">#&gt;        "B.1.617.2.2"               "XD.1"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="sort">Sort<a class="anchor" aria-label="anchor" href="#sort"></a>
+</h3>
+<p>Perform a pseudo-sort on the lineage names.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Sort lineages</span></span>
 <span><span class="fu"><a href="reference/sort_pangoro.html">sort_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">exp_lin</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 BL.2            B.1.617.2                 AY.4 </span></span>
-<span><span class="co">#&gt; "B.1.1.529.2.75.1.2"          "B.1.617.2"        "B.1.617.2.4" </span></span>
+<span><span class="co">#&gt;                 BA.1                 BL.2            B.1.617.2 </span></span>
+<span><span class="co">#&gt;        "B.1.1.529.1" "B.1.1.529.2.75.1.2"          "B.1.617.2" </span></span>
+<span><span class="co">#&gt;                 AY.2                 AY.4          B.1.617.2.6 </span></span>
+<span><span class="co">#&gt;        "B.1.617.2.2"        "B.1.617.2.4"        "B.1.617.2.6" </span></span>
 <span><span class="co">#&gt;                AY.39                 XD.1 </span></span>
 <span><span class="co">#&gt;       "B.1.617.2.39"               "XD.1"</span></span></code></pre></div>
+<p>Split the lineages by their lowest alias codes and sort within each grouping</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">collapsed_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/collapse_pangoro.html">collapse_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">cov_lin</span>, aliase_parent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span><span class="va">grps</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">collapsed_full</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">collapsed_full</span>, split <span class="op">=</span> <span class="st">'\\.'</span><span class="op">)</span>, <span class="va">`[[`</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">grps</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="reference/sort_pangoro.html">sort_pangoro</a></span><span class="op">(</span><span class="va">my_pangoro</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $AY</span></span>
+<span><span class="co">#&gt; [1] "AY"    "AY.2"  "AY.4"  "AY.6"  "AY.39"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $BA</span></span>
+<span><span class="co">#&gt; [1] "BA.1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $BL</span></span>
+<span><span class="co">#&gt; [1] "BL.2"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $XD</span></span>
+<span><span class="co">#&gt; [1] "XD.1"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="detect-recombinant-lineages">Detect recombinant lineages<a class="anchor" aria-label="anchor" href="#detect-recombinant-lineages"></a>
+</h3>
+<p>Although initial recombinant variants are typically obvious based upon their <em>X</em> prefix, their children may not be (e.g. <em>EG.1</em>).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/is_recombinant.html">is_recombinant</a></span><span class="op">(</span><span class="va">my_pangoro</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'EG.1'</span>, <span class="st">'EC.1'</span>, <span class="st">'BA.1'</span>, <span class="st">'XBB.1.9.1.1.5.1'</span>, <span class="st">'B.1.529.1'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE FALSE FALSE  TRUE FALSE</span></span></code></pre></div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
