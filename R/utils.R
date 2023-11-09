@@ -77,4 +77,34 @@ crt_expand_nm <- function(input, exp_nm, prov_nm) {
   }
 }
 
+#' Detect recombinants
+#'
+#' Determine if any of the input lineages expand back to a recombinant node.
+#'
+#' @inheritParams expand_pangoro
+#' @param use_names Boolean to determine if logical or character value of recombinant names used.
+#'
+#' @returns Either boolean or character vector
+#'
+#' @examples
+#' \dontrun{
+#' my_pangoro <- pangoRo::pangoro()
+#' is_recombinant(my_pangoro, c('EG.1', 'EC.1'))
+#' }
+#' @export
+is_recombinant <- function(pangoro, input, use_names = FALSE) {
 
+  input_exp <- expand_pangoro(pangoro, input)
+  input_exp_pref <- gsub(x = input_exp, '^([A-Z|a-z]*)(\\.?.*)$', replacement = '\\1')
+  index <- input_exp_pref %in% pangoro$alias[pangoro$recomb == TRUE]
+
+  if(use_names){
+    new_index <- character(length(index))
+    new_index[index] <- input_exp_pref[index]
+    new_index[!index] <- NA_character_
+    return(new_index)
+  }
+
+  index
+
+}

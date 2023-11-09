@@ -112,3 +112,14 @@ lapply(grps, function(x) sort_pangoro(my_pangoro, x))
 #> $XD
 #> [1] "XD.1"
 ```
+
+### Detect recombinant lineages
+
+Although initial recombinant variants are typically obvious based upon
+their *X* prefix, their children may not be (e.g. *EG.1*).
+
+``` r
+is_recombinant(my_pangoro,
+               c('EG.1', 'EC.1', 'BA.1', 'XBB.1.9.1.1.5.1', 'B.1.529.1'))
+#> [1]  TRUE FALSE FALSE  TRUE FALSE
+```
