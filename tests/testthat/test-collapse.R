@@ -35,14 +35,26 @@ test_that("Collapsing on already partially collapsed input", {
 })
 
 test_that("Parent of new alias can be collapsed if so desired for grouping work", {
+
+  # Single and >1 tests
   expect_equal(collapse_pangoro(my_pangoro, 'B.1.1.529.5.3.1.1.1.1', aliase_parent = TRUE), 'BQ', ignore_attr = TRUE)
   expect_equal(collapse_pangoro(my_pangoro, c('B.1.1.529.5.3.1.1.1.1',
                                               'B.1.1.529.5.3.1.1.1.1.1.10.1',
                                               'B.1.1.529.5.3.1.1.1.1.1.10.1.1'), aliase_parent = TRUE),
                c('BQ', 'EC', 'EC.1'), ignore_attr = TRUE)
+
+  # Partial collapsing with and without parent aliased
   expect_equal(collapse_pangoro(my_pangoro, c('B.1.1.529.5.3.1.1.1.1',
                                               'B.1.1.529.5.3.1.1.1.1.1.10.1',
                                               'B.1.1.529.5.3.1.1.1.1.1.10.1.1'), aliase_parent = TRUE, max_level = 2),
                c('BQ', 'BE.1.1.1.1.10.1', 'BE.1.1.1.1.10.1.1'), ignore_attr = TRUE)
+  expect_equal(collapse_pangoro(my_pangoro, c('B.1.1.529.5.3.1.1.1.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1',
+                                              'B.1.1.529.5.3.1.1.1.1.1.10.1.1'), aliase_parent = FALSE, max_level = 2),
+               c('BE.1.1.1', 'BE.1.1.1.1.10.1', 'BE.1.1.1.1.10.1.1'), ignore_attr = TRUE)
+
+  # Recombinant input
+  expect_equal(collapse_pangoro(my_pangoro, "XBB.1.9.2", aliase_parent = TRUE), 'EG')
+  expect_equal(collapse_pangoro(my_pangoro, "XBB.1.9.2", aliase_parent = FALSE), "XBB.1.9.2")
 
 })

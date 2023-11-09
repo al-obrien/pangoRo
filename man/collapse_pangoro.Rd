@@ -4,7 +4,13 @@
 \alias{collapse_pangoro}
 \title{Collapse PANGO lineage names}
 \usage{
-collapse_pangoro(pangoro, input, max_level = NULL, simplify = TRUE)
+collapse_pangoro(
+  pangoro,
+  input,
+  max_level = NULL,
+  simplify = TRUE,
+  aliase_parent = FALSE
+)
 }
 \arguments{
 \item{pangoro}{Pangoro object.}
@@ -14,6 +20,8 @@ collapse_pangoro(pangoro, input, max_level = NULL, simplify = TRUE)
 \item{max_level}{How far to expand the lineage name (default: maximum).}
 
 \item{simplify}{Boolean, pass to \code{\link{mapply}}.}
+
+\item{aliase_parent}{Boolean, to use alias code for originating parent (e.g. BQ.1.10.1 -> EC)}
 }
 \description{
 Collapse provided PANGO lineage names completely or up to a maximum depth.

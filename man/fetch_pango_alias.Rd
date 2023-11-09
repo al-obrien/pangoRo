@@ -14,7 +14,7 @@ fetch_pango_alias(
 }
 \description{
 Pulls JSON and formats into a flat table. Recombinants determined by the number
-of lineages associated with alias.
+of lineages associated with alias. Their subsequent children aliases are not flagged.
 }
 \examples{
 \dontrun{
